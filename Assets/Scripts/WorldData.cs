@@ -34,10 +34,7 @@ public class WorldData : MonoBehaviour {
 
     private void Update() {
         playerChunkCoord = GetChunkCoordFromVector3(player.position);
-        if (!playerChunkCoord.Equals(playerLastChunkCoord)) {
-            playerLastChunkCoord = GetChunkCoordFromVector3(player.position);
-            CheckViewDistance();
-        }
+        // if (!playerChunkCoord.Equals(playerLastChunkCoord)) CheckViewDistance();
     }
 
 
@@ -78,20 +75,35 @@ public class WorldData : MonoBehaviour {
                     activeChunks.Add(new ChunkCoord(x, z));
                 } 
 
-                for (int idx = 0; idx < previouslyActiveChunks.Count; ++idx) {
+                for (int idx = 0; idx < previouslyActiveChunks.Count; ++idx)
                     if (previouslyActiveChunks[idx].Equals(new ChunkCoord(x, z)))
                         previouslyActiveChunks.RemoveAt(idx);
-                }
             }
         }
 
-        foreach (ChunkCoord deadChunk in previouslyActiveChunks) {
+        foreach (ChunkCoord deadChunk in previouslyActiveChunks)
             chunks[deadChunk.x, deadChunk.z].IsActive = false;
-        }
+
+        playerLastChunkCoord = GetChunkCoordFromVector3(player.position);
     }
 
     private int GetTerrainHeight(float x, float z) {
         return Mathf.FloorToInt(biome.solidGroundHeight + biome.terrainHeight * Noise.Get2DPerlin(new Vector2(x, z), 0, biome.terrainScale));
+    }
+
+    // CheckForVoxel returns whether the voxel at the given global coordinates is solid
+    public bool CheckForVoxel(float x, float y, float z) {
+        int xBlock = Mathf.FloorToInt(x);
+        int yBlock = Mathf.FloorToInt(y);
+        int zBlock = Mathf.FloorToInt(z);
+
+        int xChunk = xBlock / VoxelData.chunkWidth;
+        int zChunk = zBlock / VoxelData.chunkWidth;
+
+        xBlock -= xChunk * VoxelData.chunkWidth;
+        zBlock -= zChunk * VoxelData.chunkWidth;
+
+        return blockTypes[chunks[xChunk, zChunk].voxelMap[xBlock, yBlock, zBlock]].isSolid;
     }
 
     // GetVoxel() returns the block ID based on its position in the world
