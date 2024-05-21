@@ -24,13 +24,15 @@ public class DebugScreen : MonoBehaviour {
     }
 
     private void Update() {
-        if (timer > 1f) framerate = (int)(1f / Time.unscaledDeltaTime);
+        if (timer > 1f){
+            framerate = (int)(1f / Time.unscaledDeltaTime);
+            timer = 0f;
+        } else timer += Time.deltaTime;
 
-
-        text.text = "Minecraft 2 | Created by Flynn Lyon \n" +
-                    "\n" +
-                    "Framerate: " + framerate + " fps\n" +
-                    "Coordinates: " + (Mathf.Floor(worldData.player.transform.position.x) - halfWorldSizeInVoxels) + ", " + (Mathf.Floor(worldData.player.transform.position.y) - halfWorldSizeInVoxels) + ", " + (Mathf.Floor(worldData.player.transform.position.z) - halfWorldSizeInVoxels) + "\n" +
-                    "Chunk: " + (worldData.playerChunkCoord.x - halfWorldSizeInChunks) + ", " + (worldData.playerChunkCoord.z - halfWorldSizeInChunks) + "\n";
+       text.text = "Minecraft 2 | Created by Flynn Lyon \n" +
+                   "\n" +
+                   "Framerate: " + framerate + " fps\n" +
+                   "Coordinates: " + (Mathf.Floor(worldData.player.transform.position.x) - halfWorldSizeInVoxels) + ", " + (Mathf.Floor(worldData.player.transform.position.y) - halfWorldSizeInVoxels) + ", " + (Mathf.Floor(worldData.player.transform.position.z) - halfWorldSizeInVoxels) + "\n" +
+                   "Chunk: " + (worldData.playerChunkCoord.x - halfWorldSizeInChunks) + ", " + (worldData.playerChunkCoord.z - halfWorldSizeInChunks) + "\n";
     }
 }
