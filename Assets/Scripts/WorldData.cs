@@ -17,11 +17,13 @@ public class WorldData : MonoBehaviour {
     private ChunkData[,] chunks = new ChunkData[VoxelData.worldSizeInChunks,
                                                VoxelData.worldSizeInChunks];
     private List<ChunkCoord> activeChunks = new List<ChunkCoord>();             // REMOVE DESPAWNED CHUNKS FROM ACTIVECHUNKS !!!!!
-    private ChunkCoord playerChunkCoord;
+    public ChunkCoord playerChunkCoord;
     private ChunkCoord playerLastChunkCoord;
 
     private List<ChunkCoord> chunksToCreate = new List<ChunkCoord>();
     private bool isCreatingChunks = false;
+
+    public GameObject debugScreen;
 
 
     private void Start() {
@@ -39,6 +41,8 @@ public class WorldData : MonoBehaviour {
         playerChunkCoord = GetChunkCoordFromVector3(player.position);
         if (!playerChunkCoord.Equals(playerLastChunkCoord)) CheckViewDistance();
         if (chunksToCreate.Count > 0 && !isCreatingChunks) StartCoroutine(CreateChunks());
+
+        if (Input.GetKeyDown(KeyCode.F3)) debugScreen.SetActive(!debugScreen.activeSelf);
     }
 
 
@@ -112,6 +116,9 @@ public class WorldData : MonoBehaviour {
     // CheckForVoxel returns whether the voxel at the given global coordinates is solid
     public bool CheckForVoxel(Vector3 position) {
         ChunkCoord thisChunk = new ChunkCoord(position);
+
+        // This line could maybe replace "if (!IsChunkInWorld..."
+        // if (!IsVoxelInWorld(position)) return false;
 
         if (!IsChunkInWorld(thisChunk) || position.y < 0 || position.y > VoxelData.chunkHeight) return false;
         if (chunks[thisChunk.x, thisChunk.z] != null &&
