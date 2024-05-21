@@ -19,12 +19,20 @@ public class ChunkData {
     public byte[,,] voxelMap = new byte[VoxelData.chunkWidth, VoxelData.chunkHeight, VoxelData.chunkWidth];
     public WorldData worldData;
 
-    // ChunkData constructor
-    public ChunkData(ChunkCoord _chunkCoord, WorldData _worldData) {
+    private bool _isActive;
+    public bool isVoxelMapPopulated = false;
 
+
+    // ChunkData constructor
+    public ChunkData(ChunkCoord _chunkCoord, WorldData _worldData, bool generateOnLoad) {
         chunkCoord = _chunkCoord;
         worldData = _worldData;
+        _isActive = true;
 
+        if (generateOnLoad) Init();
+    }
+
+    public void Init() {
         chunkObject = new GameObject();
         meshFilter = chunkObject.AddComponent<MeshFilter>();
         meshRenderer = chunkObject.AddComponent<MeshRenderer>();
@@ -50,6 +58,7 @@ public class ChunkData {
                 } 
             }
         }
+        isVoxelMapPopulated = true;
     }
 
     // CreateMeshData() adds all necessary faces to the chunk's mesh
@@ -66,8 +75,11 @@ public class ChunkData {
     }
 
     public bool IsActive {
-        get { return chunkObject.activeSelf; }
-        set { chunkObject.SetActive(value); }
+        get { return _isActive; }
+        set {
+            _isActive = value;
+            if (chunkObject != null) chunkObject.SetActive(value);
+        }
     }
 
     public Vector3 chunkPosition {
@@ -88,9 +100,21 @@ public class ChunkData {
         int z = Mathf.FloorToInt(position.z);
 
         if (!IsVoxelInChunk(x, y, z))
-            return worldData.blockTypes[worldData.GetVoxel(position + chunkPosition)].isSolid;
+            return worldData.CheckForVoxel(position + chunkPosition);
 
         return worldData.blockTypes[voxelMap[x, y, z]].isSolid;
+    }
+
+
+    public byte GetVoxelFromGlobalVector3(Vector3 position) {
+        int xBlock = Mathf.FloorToInt(position.x);
+        int yBlock = Mathf.FloorToInt(position.y);
+        int zBlock = Mathf.FloorToInt(position.z);
+
+        xBlock -= Mathf.FloorToInt(chunkObject.transform.position.x);
+        zBlock -= Mathf.FloorToInt(chunkObject.transform.position.z);
+
+        return voxelMap[xBlock, yBlock, zBlock];
     }
 
     // AddVoxelDataToChunk() adds the specified voxel's data to the chunk's mesh
@@ -155,7 +179,12 @@ public class ChunkCoord {
     public int x;
     public int z;
 
-    public ChunkCoord(int _x, int _z) {
+    public ChunkCoord(Vector3 position) {
+        x = Mathf.FloorToInt(position.x) / VoxelData.chunkWidth;
+        z = Mathf.FloorToInt(position.z) / VoxelData.chunkWidth;
+    }
+
+    public ChunkCoord(int _x = 0, int _z = 0) {
         x = _x;
         z = _z;
     }
