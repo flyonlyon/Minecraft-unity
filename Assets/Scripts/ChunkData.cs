@@ -44,8 +44,7 @@ public class ChunkData {
         meshRenderer.material = worldData.material;
 
         PopulateVoxelMap();
-        CreateMeshData();
-        CreateMesh();
+        UpdateChunkMesh();
     }
 
     // PopulateVoxelMap() fills the chunk's voxel map with data
@@ -62,16 +61,27 @@ public class ChunkData {
     }
 
     // CreateMeshData() adds all necessary faces to the chunk's mesh
-    private void CreateMeshData() {
+    private void UpdateChunkMesh() {
+        ClearMeshData();
+
         for (int y = 0; y < VoxelData.chunkHeight; ++y) {
             for (int x = 0; x < VoxelData.chunkWidth; ++x) {
                 for (int z = 0; z < VoxelData.chunkWidth; ++z) {
 
                     if (!worldData.blockTypes[voxelMap[x, y, z]].isSolid) continue;
-                    AddVoxelDataToChunk(new Vector3(x, y, z));
+                    UpdateMeshData(new Vector3(x, y, z));
                 }
             }
         }
+
+        CreateMesh();
+    }
+
+    private void ClearMeshData() {
+        vertexIndex = 0;
+        vertices.Clear();
+        triangles.Clear();
+        uvs.Clear();
     }
 
     public bool IsActive {
@@ -91,6 +101,31 @@ public class ChunkData {
         return !(x < 0 || x > VoxelData.chunkWidth - 1 ||
                  y < 0 || y > VoxelData.chunkHeight - 1 ||
                  z < 0 || z > VoxelData.chunkWidth - 1);
+    }
+
+
+    public void EditVoxel(Vector3 position, byte newID) {
+        int xBlock = Mathf.FloorToInt(position.x);
+        int yBlock = Mathf.FloorToInt(position.y);
+        int zBlock = Mathf.FloorToInt(position.z);
+
+        xBlock -= Mathf.FloorToInt(chunkObject.transform.position.x);
+        zBlock -= Mathf.FloorToInt(chunkObject.transform.position.z);
+
+        voxelMap[xBlock, yBlock, zBlock] = newID;
+        UpdateSurroundingVoxels(new Vector3(xBlock, yBlock, zBlock));
+        UpdateChunkMesh();
+    }
+
+    private void UpdateSurroundingVoxels(Vector3 position) {
+        int x = Mathf.FloorToInt(position.x);
+        int y = Mathf.FloorToInt(position.y);
+        int z = Mathf.FloorToInt(position.z);
+
+        for (int face = 0; face < 6; ++face) {
+            Vector3 voxel = position + VoxelData.faceChecks[face];
+            if (!IsVoxelInChunk((int)voxel.x, (int)voxel.y, (int)voxel.z)) worldData.GetChunkFromVector3(voxel + chunkPosition).UpdateChunkMesh();
+        }
     }
 
     // CheckVoxel() returns true if there is a solid block at the specified position
@@ -118,7 +153,7 @@ public class ChunkData {
     }
 
     // AddVoxelDataToChunk() adds the specified voxel's data to the chunk's mesh
-    private void AddVoxelDataToChunk(Vector3 position) {
+    private void UpdateMeshData(Vector3 position) {
 
         for (int face = 0; face < 6; ++face) {
 

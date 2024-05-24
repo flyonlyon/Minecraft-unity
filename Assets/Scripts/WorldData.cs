@@ -73,11 +73,16 @@ public class WorldData : MonoBehaviour {
     }
 
     // GetChunkCoordFromVector3() gets the coordinate of the chunk the given position is in
-    private ChunkCoord GetChunkCoordFromVector3(Vector3 position)
-    {
+    private ChunkCoord GetChunkCoordFromVector3(Vector3 position) {
         int x = Mathf.FloorToInt(position.x / VoxelData.chunkWidth);
         int z = Mathf.FloorToInt(position.z / VoxelData.chunkWidth);
         return new ChunkCoord(x, z);
+    }
+
+    public ChunkData GetChunkFromVector3(Vector3 position) {
+        int x = Mathf.FloorToInt(position.x / VoxelData.chunkWidth);
+        int z = Mathf.FloorToInt(position.z / VoxelData.chunkWidth);
+        return chunks[x, z];
     }
 
     // CheckViewDistance() creates chunks within the view distance that haven't been created
