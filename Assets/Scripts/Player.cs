@@ -34,7 +34,6 @@ public class Player : MonoBehaviour {
     public float checkIncrement = 0.675f;
     public float reach = 7f;
 
-    public TextMeshProUGUI selectedBlockText;
     public byte selectedBlockIndex = 1;
 
     private void Start() {
@@ -42,7 +41,6 @@ public class Player : MonoBehaviour {
         world = GameObject.Find("World").GetComponent<WorldData>();
 
         Cursor.lockState = CursorLockMode.Locked;
-        selectedBlockText.text = world.blockTypes[selectedBlockIndex].blockName + " Block Selected";
     }
 
     private void Update() {
@@ -96,16 +94,7 @@ public class Player : MonoBehaviour {
 
         if (isGrounded && Input.GetButtonDown("Jump")) jumpRequest = true;
 
-        float scroll = Input.GetAxis("Mouse ScrollWheel");
-        if (scroll != 0) {
-            if (scroll > 0) ++selectedBlockIndex;
-            else --selectedBlockIndex;
-
-            if (selectedBlockIndex > (byte)(world.blockTypes.Length - 1)) selectedBlockIndex = 1;
-            if (selectedBlockIndex < 1) selectedBlockIndex = (byte)(world.blockTypes.Length - 1);
-
-            selectedBlockText.text = world.blockTypes[selectedBlockIndex].blockName + " Block Selected";
-        }
+        // Handle selected block
 
         if (breakBlock.gameObject.activeSelf) {
             if (Input.GetMouseButtonDown(0))
