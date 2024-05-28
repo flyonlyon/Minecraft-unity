@@ -302,6 +302,7 @@ MonoBehaviour:
     leftFaceTexture: 11
     bottomFaceTexture: 11
   debugScreen: {fileID: 672486804}
+  enableThreading: 1
 --- !u!4 &185321961
 Transform:
   m_ObjectHideFlags: 0

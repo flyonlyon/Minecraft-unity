@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
+
 public class ChunkData {
 
     public ChunkCoord chunkCoord;
@@ -18,6 +19,8 @@ public class ChunkData {
     Material[] materials = new Material[2]; 
     List<Vector2> uvs = new List<Vector2>();
 
+    public Vector3 chunkPosition;
+
     public byte[,,] voxelMap = new byte[VoxelData.chunkWidth, VoxelData.chunkHeight, VoxelData.chunkWidth];
 
     public Queue<VoxelMod> modifications = new Queue<VoxelMod>();
@@ -25,16 +28,13 @@ public class ChunkData {
     public WorldData worldData;
 
     private bool _isActive;
-    public bool isVoxelMapPopulated = false;
+    private bool isVoxelMapPopulated = false;
 
 
     // ChunkData constructor
-    public ChunkData(ChunkCoord _chunkCoord, WorldData _worldData, bool generateOnLoad) {
+    public ChunkData(ChunkCoord _chunkCoord, WorldData _worldData) {
         chunkCoord = _chunkCoord;
         worldData = _worldData;
-        _isActive = true;
-
-        if (generateOnLoad) Init();
     }
 
     public void Init() {
@@ -46,12 +46,13 @@ public class ChunkData {
         chunkObject.transform.SetParent(worldData.transform);
         chunkObject.transform.position = new Vector3(chunkCoord.x * VoxelData.chunkWidth, 0f,
                                                      chunkCoord.z * VoxelData.chunkWidth);
+        chunkPosition = chunkObject.transform.position;
+
         materials[0] = worldData.material;
         materials[1] = worldData.transparentMaterial;
         meshRenderer.materials = materials;
 
         PopulateVoxelMap();
-        UpdateChunkMesh();
     }
 
     // PopulateVoxelMap() fills the chunk's voxel map with data
@@ -64,12 +65,14 @@ public class ChunkData {
                 } 
             }
         }
+
         isVoxelMapPopulated = true;
+        lock(worldData.chunkUpdateThreadLock)
+            worldData.chunksToUpdate.Add(this);
     }
 
     // CreateMeshData() adds all necessary faces to the chunk's mesh
     public void UpdateChunkMesh() {
-
         while (modifications.Count > 0) {
             VoxelMod currMod = modifications.Dequeue();
             Vector3 pos = currMod.position -= chunkPosition;
@@ -88,7 +91,7 @@ public class ChunkData {
             }
         }
 
-        CreateMesh();
+        worldData.chunksToDraw.Enqueue(this);
     }
 
     private void ClearMeshData() {
@@ -107,8 +110,11 @@ public class ChunkData {
         }
     }
 
-    public Vector3 chunkPosition {
-        get { return chunkObject.transform.position; }
+    public bool isEditable {
+        get {
+            if (!isVoxelMapPopulated) return false;
+            else return true;
+        }
     }
 
     // IsVoxelInChunk() returns whether the voxel is on the inside of a chunk
@@ -128,8 +134,11 @@ public class ChunkData {
         zBlock -= Mathf.FloorToInt(chunkObject.transform.position.z);
 
         voxelMap[xBlock, yBlock, zBlock] = newID;
-        UpdateSurroundingVoxels(new Vector3(xBlock, yBlock, zBlock));
-        UpdateChunkMesh();
+
+        lock (worldData.chunkUpdateThreadLock) {
+            worldData.chunksToUpdate.Insert(0, this);
+            UpdateSurroundingVoxels(new Vector3(xBlock, yBlock, zBlock));
+        }
     }
 
     private void UpdateSurroundingVoxels(Vector3 position) {
@@ -139,7 +148,8 @@ public class ChunkData {
 
         for (int face = 0; face < 6; ++face) {
             Vector3 voxel = position + VoxelData.faceChecks[face];
-            if (!IsVoxelInChunk((int)voxel.x, (int)voxel.y, (int)voxel.z)) worldData.GetChunkFromVector3(voxel + chunkPosition).UpdateChunkMesh();
+            if (!IsVoxelInChunk((int)voxel.x, (int)voxel.y, (int)voxel.z))
+                worldData.chunksToUpdate.Insert(0, worldData.GetChunkFromVector3(voxel + chunkPosition));
         }
     }
 
@@ -161,12 +171,13 @@ public class ChunkData {
         int yBlock = Mathf.FloorToInt(position.y);
         int zBlock = Mathf.FloorToInt(position.z);
 
-        xBlock -= Mathf.FloorToInt(chunkObject.transform.position.x);
-        zBlock -= Mathf.FloorToInt(chunkObject.transform.position.z);
+        xBlock -= Mathf.FloorToInt(chunkPosition.x);
+        zBlock -= Mathf.FloorToInt(chunkPosition.z);
 
         return voxelMap[xBlock, yBlock, zBlock];
     }
 
+    // THREAD SAFE
     // AddVoxelDataToChunk() adds the specified voxel's data to the chunk's mesh
     private void UpdateMeshData(Vector3 position) {
         byte blockID = voxelMap[(int)position.x, (int)position.y, (int)position.z];
@@ -204,8 +215,9 @@ public class ChunkData {
         }
     }
 
+    // THREAD DANGEROUS
     // CreateMesh() creates a mesh based on the chunk's vertices, triagles, and uvs
-    private void CreateMesh() {
+    public void CreateMesh() {
         Mesh mesh = new Mesh();
         mesh.vertices = vertices.ToArray();
 
