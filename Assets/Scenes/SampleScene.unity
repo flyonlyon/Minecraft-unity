@@ -202,7 +202,7 @@ MonoBehaviour:
     leftFaceTexture: 0
     bottomFaceTexture: 0
   - blockName: Bedrock
-    blockIcon: {fileID: 862786077, guid: f0fc342de28f54b98bcc0cb605d97d2a, type: 3}
+    blockIcon: {fileID: -2135083169, guid: a7dac7be2b37549909612e597d5ffea4, type: 3}
     isSolid: 1
     isTransparent: 0
     topFaceTexture: 0
@@ -212,7 +212,7 @@ MonoBehaviour:
     leftFaceTexture: 0
     bottomFaceTexture: 0
   - blockName: Grass
-    blockIcon: {fileID: 151425827, guid: f0fc342de28f54b98bcc0cb605d97d2a, type: 3}
+    blockIcon: {fileID: 466796369, guid: a7dac7be2b37549909612e597d5ffea4, type: 3}
     isSolid: 1
     isTransparent: 0
     topFaceTexture: 1
@@ -222,7 +222,7 @@ MonoBehaviour:
     leftFaceTexture: 2
     bottomFaceTexture: 3
   - blockName: Dirt
-    blockIcon: {fileID: 2017793539, guid: f0fc342de28f54b98bcc0cb605d97d2a, type: 3}
+    blockIcon: {fileID: 1528604508, guid: a7dac7be2b37549909612e597d5ffea4, type: 3}
     isSolid: 1
     isTransparent: 0
     topFaceTexture: 3
@@ -232,7 +232,7 @@ MonoBehaviour:
     leftFaceTexture: 3
     bottomFaceTexture: 3
   - blockName: Stone
-    blockIcon: {fileID: 105837503, guid: f0fc342de28f54b98bcc0cb605d97d2a, type: 3}
+    blockIcon: {fileID: -1068425898, guid: a7dac7be2b37549909612e597d5ffea4, type: 3}
     isSolid: 1
     isTransparent: 0
     topFaceTexture: 4
@@ -242,7 +242,7 @@ MonoBehaviour:
     leftFaceTexture: 4
     bottomFaceTexture: 4
   - blockName: Deepstone
-    blockIcon: {fileID: 1071532449, guid: f0fc342de28f54b98bcc0cb605d97d2a, type: 3}
+    blockIcon: {fileID: 309166713, guid: a7dac7be2b37549909612e597d5ffea4, type: 3}
     isSolid: 1
     isTransparent: 0
     topFaceTexture: 5
@@ -252,7 +252,7 @@ MonoBehaviour:
     leftFaceTexture: 5
     bottomFaceTexture: 5
   - blockName: Brimstone
-    blockIcon: {fileID: -2016780622, guid: f0fc342de28f54b98bcc0cb605d97d2a, type: 3}
+    blockIcon: {fileID: 568429565, guid: a7dac7be2b37549909612e597d5ffea4, type: 3}
     isSolid: 1
     isTransparent: 0
     topFaceTexture: 6
@@ -262,7 +262,7 @@ MonoBehaviour:
     leftFaceTexture: 6
     bottomFaceTexture: 6
   - blockName: Sand
-    blockIcon: {fileID: -786826904, guid: f0fc342de28f54b98bcc0cb605d97d2a, type: 3}
+    blockIcon: {fileID: -1572316903, guid: a7dac7be2b37549909612e597d5ffea4, type: 3}
     isSolid: 1
     isTransparent: 0
     topFaceTexture: 7
@@ -272,7 +272,7 @@ MonoBehaviour:
     leftFaceTexture: 7
     bottomFaceTexture: 7
   - blockName: Glass
-    blockIcon: {fileID: -1386548878, guid: f0fc342de28f54b98bcc0cb605d97d2a, type: 3}
+    blockIcon: {fileID: 1961054751, guid: a7dac7be2b37549909612e597d5ffea4, type: 3}
     isSolid: 1
     isTransparent: 1
     topFaceTexture: 8
@@ -281,6 +281,26 @@ MonoBehaviour:
     backFaceTexture: 8
     leftFaceTexture: 8
     bottomFaceTexture: 8
+  - blockName: Log
+    blockIcon: {fileID: 1183758795, guid: a7dac7be2b37549909612e597d5ffea4, type: 3}
+    isSolid: 1
+    isTransparent: 0
+    topFaceTexture: 10
+    frontFaceTexture: 9
+    rightFaceTexture: 9
+    backFaceTexture: 9
+    leftFaceTexture: 9
+    bottomFaceTexture: 10
+  - blockName: Leaves
+    blockIcon: {fileID: 1373512655, guid: a7dac7be2b37549909612e597d5ffea4, type: 3}
+    isSolid: 1
+    isTransparent: 1
+    topFaceTexture: 11
+    frontFaceTexture: 11
+    rightFaceTexture: 11
+    backFaceTexture: 11
+    leftFaceTexture: 11
+    bottomFaceTexture: 11
   debugScreen: {fileID: 672486804}
 --- !u!4 &185321961
 Transform:
@@ -563,7 +583,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &672486805
 RectTransform:
   m_ObjectHideFlags: 0

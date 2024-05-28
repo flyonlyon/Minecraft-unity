@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: f0fc342de28f54b98bcc0cb605d97d2a
+guid: a7dac7be2b37549909612e597d5ffea4
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -163,8 +163,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3a13e01ec74f743e1945b1d9b8225314
-      internalID: 862786077
+      spriteID: 293bf898debea474e9704017eda091d1
+      internalID: -2135083169
       vertices: []
       indices: 
       edges: []
@@ -184,8 +184,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9cbf0d5dd4e874346b1bbedc57fcc62c
-      internalID: 151425827
+      spriteID: e5ebdb2e22bbe463da2acb32434944b6
+      internalID: 466796369
       vertices: []
       indices: 
       edges: []
@@ -205,8 +205,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 74229ffa9385d4e879e6b9ecac158709
-      internalID: 2017793539
+      spriteID: bafcb24de1b6f469dba79d86c180f482
+      internalID: 1528604508
       vertices: []
       indices: 
       edges: []
@@ -226,14 +226,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c22b3e2123dba494e898421a76407d22
-      internalID: 105837503
+      spriteID: ce1ec71cfda0840c1a0d4ffd8ff1553d
+      internalID: -1068425898
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: deepStone_icon
+      name: deepstone_icon
       rect:
         serializedVersion: 2
         x: 128
@@ -247,14 +247,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 01a802c93de194148a44ecde2ea25918
-      internalID: 1071532449
+      spriteID: 24da58c4b431f4f7891907f48fef2d0c
+      internalID: 309166713
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: brimStone_icon
+      name: brimstone_icon
       rect:
         serializedVersion: 2
         x: 160
@@ -268,8 +268,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e406cb515a053407482694225af039d7
-      internalID: -2016780622
+      spriteID: d477fb02279384b35b529dcff96c83d6
+      internalID: 568429565
       vertices: []
       indices: 
       edges: []
@@ -279,7 +279,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 192
-        y: 480
+        y: 479
         width: 32
         height: 32
       alignment: 0
@@ -289,8 +289,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f796f9c4735d24774bf9d43d82e1a131
-      internalID: -786826904
+      spriteID: b9023b7aaee80478eb083890a54c1e81
+      internalID: -1572316903
       vertices: []
       indices: 
       edges: []
@@ -310,8 +310,50 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bd907ddc8e1e64be392a0877a49bc4e6
-      internalID: -1386548878
+      spriteID: 140c8b3fe88c6456dbca5c5ad8cdfdca
+      internalID: 1961054751
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: log_icon
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 480
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 552b87188277249fb92f49bcd6d897e9
+      internalID: 1183758795
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: leaves_icon
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 480
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 118f658fb0da34cc08c8148798f7639d
+      internalID: 1373512655
       vertices: []
       indices: 
       edges: []
@@ -319,7 +361,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 534e722629d8a411680889e69f83e09c
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -327,14 +369,16 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      bedrock_icon: 862786077
-      brimStone_icon: -2016780622
-      deepStone_icon: 1071532449
-      dirt_icon: 2017793539
-      glass_icon: -1386548878
-      grass_icon: 151425827
-      sand_icon: -786826904
-      stone_icon: 105837503
+      bedrock_icon: -2135083169
+      brimstone_icon: 568429565
+      deepstone_icon: 309166713
+      dirt_icon: 1528604508
+      glass_icon: 1961054751
+      grass_icon: 466796369
+      leaves_icon: 1373512655
+      log_icon: 1183758795
+      sand_icon: -1572316903
+      stone_icon: -1068425898
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

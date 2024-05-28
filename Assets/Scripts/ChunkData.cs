@@ -19,6 +19,9 @@ public class ChunkData {
     List<Vector2> uvs = new List<Vector2>();
 
     public byte[,,] voxelMap = new byte[VoxelData.chunkWidth, VoxelData.chunkHeight, VoxelData.chunkWidth];
+
+    public Queue<VoxelMod> modifications = new Queue<VoxelMod>();
+
     public WorldData worldData;
 
     private bool _isActive;
@@ -65,7 +68,14 @@ public class ChunkData {
     }
 
     // CreateMeshData() adds all necessary faces to the chunk's mesh
-    private void UpdateChunkMesh() {
+    public void UpdateChunkMesh() {
+
+        while (modifications.Count > 0) {
+            VoxelMod currMod = modifications.Dequeue();
+            Vector3 pos = currMod.position -= chunkPosition;
+            voxelMap[(int)pos.x, (int)pos.y, (int)pos.z] = currMod.id;
+        }
+
         ClearMeshData();
 
         for (int y = 0; y < VoxelData.chunkHeight; ++y) {
@@ -85,6 +95,7 @@ public class ChunkData {
         vertexIndex = 0;
         vertices.Clear();
         triangles.Clear();
+        transparentTriangles.Clear();
         uvs.Clear();
     }
 
