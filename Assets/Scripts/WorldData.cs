@@ -18,7 +18,7 @@ public class WorldData : MonoBehaviour {
 
     private ChunkData[,] chunks = new ChunkData[VoxelData.worldSizeInChunks,
                                                VoxelData.worldSizeInChunks];
-    private List<ChunkCoord> activeChunks = new List<ChunkCoord>();             // REMOVE DESPAWNED CHUNKS FROM ACTIVECHUNKS !!!!!
+    private List<ChunkCoord> activeChunks = new List<ChunkCoord>();
     public ChunkCoord playerChunkCoord;
     private ChunkCoord playerLastChunkCoord;
 
@@ -28,6 +28,10 @@ public class WorldData : MonoBehaviour {
 
     bool applyingModifications = false;
     public Queue<Queue<VoxelMod>> modifications = new Queue<Queue<VoxelMod>>();
+
+    private bool _inUI = false;
+    public GameObject creativeInventory;
+    public GameObject cursorSlot;
 
     public GameObject debugScreen;
 
@@ -222,6 +226,18 @@ public class WorldData : MonoBehaviour {
         return blockTypes[GetVoxel(position)].isTransparent;
     }
 
+    public bool inUI {
+        get { return _inUI; }
+        set {
+            _inUI = value;
+            if (_inUI) Cursor.lockState = CursorLockMode.None;
+            else Cursor.lockState = CursorLockMode.Locked;
+
+            creativeInventory.SetActive(_inUI);
+            cursorSlot.SetActive(_inUI);
+        }
+    }
+
     // GetVoxel() returns the block ID based on its position in the world
     public byte GetVoxel(Vector3 position) {
         int x = Mathf.FloorToInt(position.x);
@@ -280,7 +296,7 @@ public class BlockType {
 
     public bool isSolid;
     public bool isTransparent;
-    
+    public int maxStackSize;
 
     public int topFaceTexture;
     public int frontFaceTexture; 

@@ -34,7 +34,7 @@ public class Player : MonoBehaviour {
     public float checkIncrement = 0.675f;
     public float reach = 7f;
 
-    public byte selectedBlockIndex = 1;
+    public Toolbar toolbar;
 
     private void Start() {
         cameraTransform = GameObject.Find("Main Camera").transform;
@@ -44,11 +44,19 @@ public class Player : MonoBehaviour {
     }
 
     private void Update() {
-        GetPlayerInputs();
-        PlaceOrBreakBlock();
+
+        if (Input.GetKeyDown(KeyCode.E)) world.inUI = !world.inUI;
+        if (!world.inUI) {
+            GetPlayerInputs();
+            PlaceOrBreakBlock();
+        }
+        
     }
 
     private void FixedUpdate() {
+
+        if (world.inUI) return;
+
         CalculateVelocity();
         if (jumpRequest) Jump();
 
@@ -100,8 +108,15 @@ public class Player : MonoBehaviour {
             if (Input.GetMouseButtonDown(0))
                 world.GetChunkFromVector3(breakBlock.position).EditVoxel(breakBlock.position, 0);
 
-            else if (Input.GetMouseButtonDown(1))
-                world.GetChunkFromVector3(placeBlockPosition).EditVoxel(placeBlockPosition, selectedBlockIndex);
+            else if (Input.GetMouseButtonDown(1)) {
+                if (toolbar.slots[toolbar.slotIndex].itemSlot.HasItem) {
+                    world.GetChunkFromVector3(placeBlockPosition).EditVoxel(placeBlockPosition,
+                                                                        toolbar.slots[toolbar.slotIndex].itemSlot.stack.id);
+                    toolbar.slots[toolbar.slotIndex].itemSlot.Take(1);
+
+                }
+            }
+                
         }
     }
 
