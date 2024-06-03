@@ -9,6 +9,11 @@ public class WorldData : MonoBehaviour {
     public int seed;
     public BiomeData biome;
 
+    public Color day;
+    public Color night;
+    [Range(0.95f, 0)]
+    public float globalLightLevel;
+
     public Transform player;
     public Vector3 spawnPosition;
 
@@ -47,7 +52,6 @@ public class WorldData : MonoBehaviour {
             chunkUpdateThread = new Thread(new ThreadStart(ThreadedUpdate));
             chunkUpdateThread.Start();
         }
-        
 
         spawnPosition = new Vector3(VoxelData.worldSizeInChunks * VoxelData.chunkWidth / 2f,
                                     GetTerrainHeight(VoxelData.worldSizeInChunks * VoxelData.chunkWidth / 2f,
@@ -59,6 +63,10 @@ public class WorldData : MonoBehaviour {
 
     private void Update() {
         playerChunkCoord = GetChunkCoordFromVector3(player.position);
+
+        Shader.SetGlobalFloat("GlobalLightLevel", globalLightLevel);
+        Camera.main.backgroundColor = Color.Lerp(day, night, globalLightLevel);
+
         if (!playerChunkCoord.Equals(playerLastChunkCoord)) CheckViewDistance();
 
         if (chunksToCreate.Count > 0) CreateChunk();
