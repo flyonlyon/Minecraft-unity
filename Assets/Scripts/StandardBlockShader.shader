@@ -42,6 +42,9 @@
 				sampler2D _MainTex;
 				float GlobalLightLevel;
 
+				float minGlobalLightLevel;
+				float maxGlobalLightLevel;
+
 				v2f vertexFunction(appdata v) {
 
 					v2f o;
@@ -56,9 +59,13 @@
 				fixed4 fragmentFunction(v2f i) : SV_Target {
 
 					fixed4 col = tex2D(_MainTex, i.uv);
-					float LocalLightLevel = clamp(GlobalLightLevel + i.color.a, 0, 1);
+
+					float shade = (maxGlobalLightLevel - minGlobalLightLevel) * GlobalLightLevel + minGlobalLightLevel;
+					shade *= i.color.a;
+					shade = clamp(1 - shade, minGlobalLightLevel, maxGlobalLightLevel);
+
 					clip(col.a - 0.2);
-					col = lerp(col, float4(0, 0, 0, 1), LocalLightLevel);
+					col = lerp(col, float4(0, 0, 0, 1), shade);
 
 					return col;
 

@@ -298,9 +298,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   seed: 1234567890
   biome: {fileID: 11400000, guid: 7d1360924210249f6b87319a0a3544db, type: 2}
+  enableThreading: 1
   day: {r: 0.6067551, g: 0.786726, b: 0.9528302, a: 1}
   night: {r: 0.03529412, g: 0.039215688, b: 0.078431375, a: 1}
-  globalLightLevel: 0
+  globalLightLevel: 1
   player: {fileID: 2044460416}
   spawnPosition: {x: 0, y: 0, z: 0}
   material: {fileID: 2100000, guid: 50dbab6fcc18c4da6b110c2c9de338ad, type: 2}
@@ -309,7 +310,8 @@ MonoBehaviour:
   - blockName: Air
     blockIcon: {fileID: 0}
     isSolid: 0
-    isTransparent: 1
+    renderNeighbors: 1
+    transparency: 1
     maxStackSize: 0
     topFaceTexture: 0
     frontFaceTexture: 0
@@ -320,7 +322,8 @@ MonoBehaviour:
   - blockName: Bedrock
     blockIcon: {fileID: -2135083169, guid: a7dac7be2b37549909612e597d5ffea4, type: 3}
     isSolid: 1
-    isTransparent: 0
+    renderNeighbors: 0
+    transparency: 0
     maxStackSize: 64
     topFaceTexture: 0
     frontFaceTexture: 0
@@ -331,7 +334,8 @@ MonoBehaviour:
   - blockName: Grass
     blockIcon: {fileID: 466796369, guid: a7dac7be2b37549909612e597d5ffea4, type: 3}
     isSolid: 1
-    isTransparent: 0
+    renderNeighbors: 0
+    transparency: 0
     maxStackSize: 64
     topFaceTexture: 1
     frontFaceTexture: 2
@@ -342,7 +346,8 @@ MonoBehaviour:
   - blockName: Dirt
     blockIcon: {fileID: 1528604508, guid: a7dac7be2b37549909612e597d5ffea4, type: 3}
     isSolid: 1
-    isTransparent: 0
+    renderNeighbors: 0
+    transparency: 0
     maxStackSize: 64
     topFaceTexture: 3
     frontFaceTexture: 3
@@ -353,7 +358,8 @@ MonoBehaviour:
   - blockName: Stone
     blockIcon: {fileID: -1068425898, guid: a7dac7be2b37549909612e597d5ffea4, type: 3}
     isSolid: 1
-    isTransparent: 0
+    renderNeighbors: 0
+    transparency: 0
     maxStackSize: 64
     topFaceTexture: 4
     frontFaceTexture: 4
@@ -364,7 +370,8 @@ MonoBehaviour:
   - blockName: Deepstone
     blockIcon: {fileID: 309166713, guid: a7dac7be2b37549909612e597d5ffea4, type: 3}
     isSolid: 1
-    isTransparent: 0
+    renderNeighbors: 0
+    transparency: 0
     maxStackSize: 64
     topFaceTexture: 5
     frontFaceTexture: 5
@@ -375,7 +382,8 @@ MonoBehaviour:
   - blockName: Brimstone
     blockIcon: {fileID: 568429565, guid: a7dac7be2b37549909612e597d5ffea4, type: 3}
     isSolid: 1
-    isTransparent: 0
+    renderNeighbors: 0
+    transparency: 0
     maxStackSize: 64
     topFaceTexture: 6
     frontFaceTexture: 6
@@ -386,7 +394,8 @@ MonoBehaviour:
   - blockName: Sand
     blockIcon: {fileID: -1572316903, guid: a7dac7be2b37549909612e597d5ffea4, type: 3}
     isSolid: 1
-    isTransparent: 0
+    renderNeighbors: 0
+    transparency: 0
     maxStackSize: 64
     topFaceTexture: 7
     frontFaceTexture: 7
@@ -397,7 +406,8 @@ MonoBehaviour:
   - blockName: Glass
     blockIcon: {fileID: 1961054751, guid: a7dac7be2b37549909612e597d5ffea4, type: 3}
     isSolid: 1
-    isTransparent: 1
+    renderNeighbors: 1
+    transparency: 1
     maxStackSize: 64
     topFaceTexture: 8
     frontFaceTexture: 8
@@ -408,7 +418,8 @@ MonoBehaviour:
   - blockName: Log
     blockIcon: {fileID: 1183758795, guid: a7dac7be2b37549909612e597d5ffea4, type: 3}
     isSolid: 1
-    isTransparent: 0
+    renderNeighbors: 0
+    transparency: 0
     maxStackSize: 64
     topFaceTexture: 10
     frontFaceTexture: 9
@@ -419,7 +430,8 @@ MonoBehaviour:
   - blockName: Leaves
     blockIcon: {fileID: 1373512655, guid: a7dac7be2b37549909612e597d5ffea4, type: 3}
     isSolid: 1
-    isTransparent: 1
+    renderNeighbors: 1
+    transparency: 0.5
     maxStackSize: 64
     topFaceTexture: 11
     frontFaceTexture: 11
@@ -430,7 +442,6 @@ MonoBehaviour:
   creativeInventory: {fileID: 1968686158}
   cursorSlot: {fileID: 794609508}
   debugScreen: {fileID: 672486804}
-  enableThreading: 1
 --- !u!4 &185321961
 Transform:
   m_ObjectHideFlags: 0

@@ -1,0 +1,8 @@
+﻿================== TODO ==================
+
+[ ]  1. Finish B3agz Tutorial
+[ ]  2. Go through code and clean things up
+[ ]      2.1. Replace every Vector3 with a Vector3Int
+[ ]      2.2. Rename functions/variables to be more clear/consise
+[ ]  3. Create an initial devlog
+[ ]  4. Upload game to itch.io
