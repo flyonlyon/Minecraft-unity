@@ -11,8 +11,6 @@ public static class VoxelData {
     public static readonly int worldSizeInChunks = 32;
     public static int worldSizeInVoxels { get { return worldSizeInChunks * chunkWidth; } }
 
-    public static readonly int viewDistance = 8;
-
     public static float minLightLevel = 0.1f;
     public static float maxLightLevel = 0.9f;
     public static float lightFalloff = 0.08f;

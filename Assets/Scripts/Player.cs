@@ -15,7 +15,6 @@ public class Player : MonoBehaviour {
     public float walkSpeed = 3f;
     public float sprintSpeed = 6f;
     public float jumpForce = 5f;
-    public float mouseSensitivity = 5f;
     public float gravity = -9.8f;
 
     public float playerWidth = 0.15f;
@@ -60,8 +59,8 @@ public class Player : MonoBehaviour {
         CalculateVelocity();
         if (jumpRequest) Jump();
 
-        transform.Rotate(mouseHorizontal * mouseSensitivity * Vector3.up);
-        cameraTransform.Rotate(-mouseVertical * mouseSensitivity * Vector3.right);
+        transform.Rotate(mouseHorizontal * world.settings.mouseSensitivity * Vector3.up);
+        cameraTransform.Rotate(-mouseVertical * world.settings.mouseSensitivity * Vector3.right);
         transform.Translate(velocity, Space.World);
     }
 
@@ -101,8 +100,6 @@ public class Player : MonoBehaviour {
         if (Input.GetButtonUp("Sprint")) isSprinting = false;
 
         if (isGrounded && Input.GetButtonDown("Jump")) jumpRequest = true;
-
-        // Handle selected block
 
         if (breakBlock.gameObject.activeSelf) {
             if (Input.GetMouseButtonDown(0))
