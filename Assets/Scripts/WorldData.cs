@@ -128,7 +128,7 @@ public class WorldData : MonoBehaviour {
         CheckViewDistance();
     }
 
-    void CreateChunk() {
+    private void CreateChunk() {
 
         ChunkCoord coord = chunksToCreate[0];
         chunksToCreate.RemoveAt(0);
@@ -136,14 +136,14 @@ public class WorldData : MonoBehaviour {
 
     }
 
-    void UpdateChunks() {
+    private void UpdateChunks() {
 
         bool updated = false;
         int index = 0;
 
         lock (chunkUpdateThreadLock) {
 
-            while (!updated && index < chunksToCreate.Count - 1) {
+            while (!updated && index < chunksToUpdate.Count - 1) {
 
                 if (chunksToUpdate[index].isEditable) {
                     chunksToUpdate[index].UpdateChunkMesh();
@@ -331,8 +331,6 @@ public class WorldData : MonoBehaviour {
         return voxelValue;
 
     }
-
-    // ===== CORRECT ===== //
 
     public bool IsChunkInWorld(ChunkCoord chunkCoord) {
         return (0 < chunkCoord.x && chunkCoord.x < VoxelData.worldSizeInChunks - 1 &&

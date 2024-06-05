@@ -44,12 +44,21 @@ public class Player : MonoBehaviour {
 
     private void Update() {
 
+        if (Input.GetKeyDown(KeyCode.P)) Display();
+
         if (Input.GetKeyDown(KeyCode.E)) world.inUI = !world.inUI;
         if (!world.inUI) {
             GetPlayerInputs();
             PlaceOrBreakBlock();
         }
         
+    }
+
+    private void Display()
+    {
+        foreach (ChunkData c in world.chunksToUpdate)
+            Debug.Log("ChunkToUpdate (" + c.chunkCoord.x + ", " + c.chunkCoord.z + "): Editable=" + c.isEditable);
+        Debug.Log("ChunkLock: " + world.chunkUpdateThreadLock);
     }
 
     private void FixedUpdate() {
@@ -92,7 +101,8 @@ public class Player : MonoBehaviour {
 
     private void GetPlayerInputs() {
 
-        if (Input.GetKeyDown(KeyCode.Escape)) Application.Quit();
+        if (Input.GetKeyDown(KeyCode.Escape))
+            Application.Quit();
 
         horizontal = Input.GetAxis("Horizontal");
         vertical = Input.GetAxis("Vertical");
@@ -109,11 +119,9 @@ public class Player : MonoBehaviour {
                 world.GetChunkFromVector3(breakBlock.position).EditVoxel(breakBlock.position, 0);
 
             else if (Input.GetMouseButtonDown(1)) {
-                if (toolbar.slots[toolbar.slotIndex].itemSlot.HasItem) {
-                    world.GetChunkFromVector3(placeBlockPosition).EditVoxel(placeBlockPosition,
-                                                                        toolbar.slots[toolbar.slotIndex].itemSlot.stack.id);
+                if (toolbar.slots[toolbar.slotIndex].HasItem) {
+                    world.GetChunkFromVector3(placeBlockPosition).EditVoxel(placeBlockPosition, toolbar.slots[toolbar.slotIndex].itemSlot.stack.id);
                     toolbar.slots[toolbar.slotIndex].itemSlot.Take(1);
-
                 }
             }
                 
