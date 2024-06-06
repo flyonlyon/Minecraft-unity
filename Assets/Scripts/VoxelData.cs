@@ -18,6 +18,7 @@ public static class VoxelData {
     public static readonly int textureAtlasSizeInBlocks = 16;
     public static float normalizedBlockTextureSize { get { return 1f / (float)textureAtlasSizeInBlocks; } }
 
+    public static int seed;
 
     public static readonly Vector3[] VoxelVertices = new Vector3[8] {
         new Vector3(0.0f, 0.0f, 0.0f),

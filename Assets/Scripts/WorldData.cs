@@ -10,7 +10,6 @@ public class WorldData : MonoBehaviour {
     public Settings settings;
 
     [Header("World Generation")]
-    public int seed;
     public BiomeData biome;
 
     [Header("Lighting")]
@@ -58,7 +57,7 @@ public class WorldData : MonoBehaviour {
         string settingsJSON = File.ReadAllText(Application.dataPath + "/settings.cfg");
         settings = JsonUtility.FromJson<Settings>(settingsJSON);
 
-        Random.InitState(seed);
+        Random.InitState(VoxelData.seed);
 
         Shader.SetGlobalFloat("minGlobalLightLevel", VoxelData.minLightLevel);
         Shader.SetGlobalFloat("maxGlobalLightLevel", VoxelData.maxLightLevel);
@@ -404,10 +403,10 @@ public class VoxelMod {
 public class Settings {
 
     [Header("Performance")]
-    public int viewDistance;
-    public bool enableThreading;
+    public int viewDistance = 8;
+    public bool enableThreading = true;
 
     [Header("Controls")]
-    [Range(0.5f, 50f)] public float mouseSensitivity;
+    [Range(0.5f, 50f)] public float mouseSensitivity = 5f;
 
 }
