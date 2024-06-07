@@ -17,7 +17,6 @@ public class Clouds : MonoBehaviour {
 
     Dictionary<Vector2Int, GameObject> clouds = new Dictionary<Vector2Int, GameObject>();
 
-
     void Start() {
 
         cloudTextureWidth = cloudPattern.width;
@@ -28,6 +27,7 @@ public class Clouds : MonoBehaviour {
 
         LoadCloudData();
         CreateClouds();
+        UpdateClouds(); // Gets called twice? Issue with order things start in
 
     }
 
