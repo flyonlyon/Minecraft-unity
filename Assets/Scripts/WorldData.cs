@@ -51,6 +51,9 @@ public class WorldData : MonoBehaviour {
     private Thread chunkUpdateThread;
     public object chunkUpdateThreadLock = new object();
 
+    [Header("Other")]
+    public Clouds clouds;
+
 
     private void Start() {
 
@@ -69,10 +72,9 @@ public class WorldData : MonoBehaviour {
 
         SetGlobalLightValue();
 
-        spawnPosition = new Vector3(VoxelData.worldSizeInChunks * VoxelData.chunkWidth / 2f,
-                                    GetTerrainHeight(VoxelData.worldSizeInChunks * VoxelData.chunkWidth / 2f,
-                                                     VoxelData.worldSizeInChunks * VoxelData.chunkWidth / 2f) + 2.5f,
-                                    VoxelData.worldSizeInChunks * VoxelData.chunkWidth / 2f);
+        spawnPosition = new Vector3(VoxelData.worldCenter,
+                                    GetTerrainHeight(VoxelData.worldCenter, VoxelData.worldCenter) + 2.5f,
+                                    VoxelData.worldCenter);
         GenerateWorld();
         playerLastChunkCoord = GetChunkCoordFromVector3(player.position);
     }
@@ -211,6 +213,8 @@ public class WorldData : MonoBehaviour {
 
     // CheckViewDistance() creates chunks within the view distance that haven't been created
     public void CheckViewDistance() {
+
+        clouds.UpdateClouds();
 
         ChunkCoord chunkCoord = GetChunkCoordFromVector3(player.position);
         playerLastChunkCoord = playerChunkCoord;

@@ -20,6 +20,8 @@ public static class VoxelData {
 
     public static int seed;
 
+    public static int worldCenter { get { return worldSizeInVoxels / 2; } }
+
     public static readonly Vector3[] VoxelVertices = new Vector3[8] {
         new Vector3(0.0f, 0.0f, 0.0f),
         new Vector3(1.0f, 0.0f, 0.0f),
