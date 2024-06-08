@@ -20,6 +20,7 @@ public class MainMenu : MonoBehaviour {
     public TextMeshProUGUI viewDistanceText;
     public Slider mouseSensitivitySlider;
     public TextMeshProUGUI mouseSensitivityText;
+    public TMP_Dropdown cloudTypeDropdown;
     public Toggle threadingToggle;
 
     [Header("Start Menu")]
@@ -63,6 +64,7 @@ public class MainMenu : MonoBehaviour {
         mouseSensitivitySlider.value = settings.mouseSensitivity;
         mouseSensitivityText.text = "Mouse Sensitivity: " + mouseSensitivitySlider.value;
         threadingToggle.isOn = settings.enableThreading;
+        cloudTypeDropdown.value = (int)settings.clouds;
 
         settingsMenuObject.SetActive(true);
     }
@@ -80,6 +82,7 @@ public class MainMenu : MonoBehaviour {
         settings.viewDistance = (int)viewDistanceSlider.value;
         settings.mouseSensitivity = mouseSensitivitySlider.value;
         settings.enableThreading = threadingToggle.isOn;
+        settings.clouds = (CloudStyle)cloudTypeDropdown.value;
 
         string settingsJSON = JsonUtility.ToJson(settings);
         File.WriteAllText(Application.dataPath + "/settings.cfg", settingsJSON);
