@@ -1,0 +1,24 @@
+{
+    "blockTypes": [
+        {
+            "name": "Air Block",
+            "isTransparent": true,
+            "faces": []
+        },
+        {
+            "name": "Grass Block",
+            "isTransparent": false,
+            "faces": [ 1, 2, 2, 2, 2, 3 ]
+        },
+        {
+            "name": "Dirt Block",
+            "isTransparent": false,
+            "faces": [ 3, 3, 3, 3, 3, 3 ]
+        },
+        {
+            "name": "Stone Block",
+            "isTransparent": false,
+            "faces": [ 4, 4, 4, 4, 4, 4 ]
+        }
+    ]
+}
