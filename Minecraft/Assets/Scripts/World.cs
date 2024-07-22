@@ -38,6 +38,7 @@ public class World : MonoBehaviour {
     //                           PRIMARY GAME LOOP                           //
     // ===================================================================== //
 
+    // LoadWorld() loads each chunk in the world
     void LoadWorld() {
         for (int x = 0; x < VoxelData.worldSizeInChunks; ++x) {
             for (int z = 0; z < VoxelData.worldSizeInChunks; ++z) {
@@ -49,10 +50,12 @@ public class World : MonoBehaviour {
         }
     }
 
+    // SpawnPlayer() sets the player's location
     void SpawnPlayer() {
         player.transform.position = new Vector3(VoxelData.worldCenterInVoxels, VoxelData.worldHeightInVoxels + 2, VoxelData.worldCenterInVoxels);
     }
 
+    // CheckViewDistance() manages loading and unloading chunks based on their distance from the player
     void CheckViewDistance() {
 
         playerChunkCoord = GetChunkCoordFromPosition(player.transform.position);
@@ -85,16 +88,19 @@ public class World : MonoBehaviour {
     //                           UTILITY FUNCTIONS                           //
     // ===================================================================== //
 
+    // GetBlockType() returns the block type at the given world position
     public ushort GetBlockType(Vector3Int voxelPos) {
         if (VoxelNotInWorld(voxelPos)) return 0;
         Vector3Int chunkCoord = GetChunkCoordFromPosition(voxelPos);
         return chunks[chunkCoord].GetBlockType(voxelPos - (chunkCoord * VoxelData.chunkSize));
     }
 
+    // GetChunkCoordFromPosition() returns the chunk coord at the given world position
     Vector3Int GetChunkCoordFromPosition(Vector3 position) {
         return Vector3Int.FloorToInt(new Vector3(position.x / 32, position.y / 32, position.z / 32));
     }
 
+    // VoxelNotInWorld() returns whether the given voxel is not in the world
     bool VoxelNotInWorld(Vector3Int voxelPos) {
         return voxelPos.x < 0 || VoxelData.worldSizeInVoxels - 1 < voxelPos.x ||
                voxelPos.y < 0 || VoxelData.worldHeightInVoxels - 1 < voxelPos.y ||
