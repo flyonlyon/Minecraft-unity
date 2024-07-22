@@ -6,8 +6,8 @@ public static class VoxelData {
 
     public const int chunkSize = 32;
 
-    public const int worldSizeInChunks = 4;
-    public const int worldHeightInChunks = 2;
+    public const int worldSizeInChunks = 8;
+    public const int worldHeightInChunks = 1;
     public const int worldSizeInVoxels = worldSizeInChunks * chunkSize;
     public const int worldHeightInVoxels = worldHeightInChunks * chunkSize;
 
@@ -16,6 +16,8 @@ public static class VoxelData {
 
     public const int textureAtlasSizeInBlocks = 16;
     public const float normalizedBlockTextureSize = 1.0f / textureAtlasSizeInBlocks;
+
+    public static int viewDistance = 2;
 
 
     public static readonly Vector3Int[] voxelVertices = new Vector3Int[8]{

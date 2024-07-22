@@ -34,10 +34,9 @@ public class Chunk {
         PopulateVoxelData();
     }
 
-    public void DrawChunk() {
-        GenerateChunkMesh();
-        DrawChunkMesh();
-    }
+    // ===================================================================== //
+    //                           PRIMARY GAME LOOP                           //
+    // ===================================================================== //
 
     // PopulateVoxelData() fills the voxelData array
     void PopulateVoxelData() {
@@ -45,6 +44,13 @@ public class Chunk {
             for (byte y = 0; y < VoxelData.chunkSize; ++y)
                 for (byte z = 0; z < VoxelData.chunkSize; ++z)
                     voxelData[x, y, z] = SetVoxelData(1, 0);   
+    }
+
+    // DrawChunk() generates and draws the chunk's mesh
+    public void DrawChunk() {
+        chunkObject.SetActive(true);
+        GenerateChunkMesh();
+        DrawChunkMesh();
     }
 
     // GenerateChunkMesh() builds the entire chunk's mesh
@@ -82,6 +88,7 @@ public class Chunk {
         }
     }
 
+    // AddTexturedUVs() Adds the texture UVs for the specified textureID
     private void AddTexturedUVs(int textureID) {
         float y = textureID / VoxelData.textureAtlasSizeInBlocks;
         float x = textureID - (y * VoxelData.textureAtlasSizeInBlocks);
@@ -108,29 +115,44 @@ public class Chunk {
         vertices.Clear();
         triangles.Clear();
         uvs.Clear();
+        currentVertex = 0;
     }
 
+    public void UndrawChunk() {
+        chunkObject.SetActive(false);
+        meshFilter.mesh = null;
+    }
+
+    // ===================================================================== //
+    //                           UTILITY FUNCTIONS                           //
+    // ===================================================================== //
+
+    // SetVoxelData() returns block type and state into a compressed data format
     ushort SetVoxelData(ushort blockType, byte blockState) {
         return (ushort)((blockType << 6) + blockState);
     }
 
+    // GetBlockType() returns the blockType of the given block if it's in this chunk,
+    // or searches worldwide if it's not in this chunk
     public ushort GetBlockType(Vector3Int voxelPos) {
         if (VoxelNotInChunk(voxelPos))
             return world.GetBlockType(voxelPos + Vector3Int.FloorToInt(chunkObject.transform.localPosition));
         return (ushort)(voxelData[voxelPos.x, voxelPos.y, voxelPos.z] >> blockTypeBitShift);
     }
 
+    // GetBlockType() returns the blockState of the given block if it's in this chunk,
+    // or searches worldwide if it's not in this chunk
     ushort GetBlockState(Vector3Int voxelPos) {
         if (VoxelNotInChunk(voxelPos)) return 0;
         return (ushort)(voxelData[voxelPos.x, voxelPos.y, voxelPos.z] & blockStateBitMask);
     }
 
+    // VoxelNotINChunk() returns whether the given voxel is not in the current chunk
     bool VoxelNotInChunk(Vector3Int voxelPos) {
         return voxelPos.x < 0 || VoxelData.chunkSize - 1 < voxelPos.x ||
                voxelPos.y < 0 || VoxelData.chunkSize - 1 < voxelPos.y ||
                voxelPos.z < 0 || VoxelData.chunkSize - 1 < voxelPos.z;
     }
-
 }
 
 
