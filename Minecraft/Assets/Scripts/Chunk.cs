@@ -18,6 +18,8 @@ public class Chunk {
     List<int> triangles = new List<int>();
     List<Vector2> uvs = new List<Vector2>();
 
+    Vector3Int position;
+
 
     public Chunk(Vector3Int chunkCoord, World _world) {
         world = _world;
@@ -31,6 +33,8 @@ public class Chunk {
         meshRenderer = chunkObject.AddComponent<MeshRenderer>();
         meshRenderer.material = world.worldMaterial;
 
+        position = Vector3Int.FloorToInt(chunkObject.transform.position);
+
         PopulateVoxelData();
     }
 
@@ -39,22 +43,18 @@ public class Chunk {
     // ===================================================================== //
 
     // PopulateVoxelData() fills the voxelData array
-    void PopulateVoxelData() {
+    public void PopulateVoxelData() {
         for (byte x = 0; x < VoxelData.chunkSize; ++x)
             for (byte y = 0; y < VoxelData.chunkSize; ++y)
                 for (byte z = 0; z < VoxelData.chunkSize; ++z)
                     voxelData[x, y, z] = SetVoxelData(1, 0);   
     }
 
-    // DrawChunk() generates and draws the chunk's mesh
-    public void DrawChunk() {
-        chunkObject.SetActive(true);
-        GenerateChunkMesh();
-        DrawChunkMesh();
-    }
+    // UpdateChunk() updates the chunk
+    public void UpdateChunk() { }
 
     // GenerateChunkMesh() builds the entire chunk's mesh
-    void GenerateChunkMesh() {
+    public void GenerateChunkMesh() {
         for (byte x = 0; x < VoxelData.chunkSize; ++x)
             for (byte y = 0; y < VoxelData.chunkSize; ++y)
                 for (byte z = 0; z < VoxelData.chunkSize; ++z)
@@ -104,6 +104,13 @@ public class Chunk {
         uvs.Add(new Vector2(x + VoxelData.normalizedBlockTextureSize, y + VoxelData.normalizedBlockTextureSize));
     }
 
+    // DrawChunk() generates and draws the chunk's mesh
+    public void DrawChunk() {
+        chunkObject.SetActive(true);
+        GenerateChunkMesh();
+        DrawChunkMesh();
+    }
+
     // DrawChunkMesh() sets the voxel
     void DrawChunkMesh() {
         Mesh mesh = new Mesh();
@@ -118,9 +125,15 @@ public class Chunk {
         currentVertex = 0;
     }
 
+    // UndrawChunk() resets the activeness and meshFilter of the chunk
     public void UndrawChunk() {
         chunkObject.SetActive(false);
         meshFilter.mesh = null;
+    }
+
+    // UnloadChunk() deletes the gameObject associated with the chunk
+    public void DeleteChunk() {
+        Object.Destroy(chunkObject);
     }
 
     // ===================================================================== //
@@ -136,7 +149,7 @@ public class Chunk {
     // or searches worldwide if it's not in this chunk
     public ushort GetBlockType(Vector3Int voxelPos) {
         if (VoxelNotInChunk(voxelPos))
-            return world.GetBlockType(voxelPos + Vector3Int.FloorToInt(chunkObject.transform.localPosition));
+            return world.GetBlockType(voxelPos + position);
         return (ushort)(voxelData[voxelPos.x, voxelPos.y, voxelPos.z] >> blockTypeBitShift);
     }
 

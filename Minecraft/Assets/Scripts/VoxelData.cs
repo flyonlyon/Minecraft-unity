@@ -18,6 +18,7 @@ public static class VoxelData {
     public const float normalizedBlockTextureSize = 1.0f / textureAtlasSizeInBlocks;
 
     public static int viewDistance = 2;
+    public static int loadDistance = viewDistance + 4;
 
 
     public static readonly Vector3Int[] voxelVertices = new Vector3Int[8]{
