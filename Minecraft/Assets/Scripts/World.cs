@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class World : MonoBehaviour {
 
+    public static World instance;
+
     [Header("World Parameters")]
     public BlockType[] blockTypes;
     public Material worldMaterial;
@@ -39,6 +41,13 @@ public class World : MonoBehaviour {
     void Awake() { blockTypes = Loader.LoadBlockTypes(); }
 
     void Start() {
+
+        // Singleton check
+        if (instance != null) {
+            Destroy(this);
+            return;
+        }
+        instance = this;
 
         // If multithreading, start all threads
         if (multithreading) {

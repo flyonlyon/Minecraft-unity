@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Chunk {
 
-    ushort[,,] voxelData = new ushort[VoxelData.chunkSize, VoxelData.chunkSize, VoxelData.chunkSize];
-    const ushort blockTypeBitShift = 6;
-    const ushort blockStateBitMask = 63;
+    static ushort blockTypeBitShift = 6;
+    static ushort blockStateBitMask = 63;
 
-    World world;
+    ushort[,,] voxelData = new ushort[VoxelData.chunkSize, VoxelData.chunkSize, VoxelData.chunkSize];
+
     GameObject chunkObject;
     MeshFilter meshFilter;
     MeshRenderer meshRenderer;
@@ -21,17 +21,15 @@ public class Chunk {
     Vector3Int position;
 
 
-    public Chunk(Vector3Int chunkCoord, World _world) {
-        world = _world;
-
+    public Chunk(Vector3Int chunkCoord) {
         chunkObject = new GameObject();
         chunkObject.name = "Chunk " + chunkCoord.x + " " + chunkCoord.y + " " + chunkCoord.z;
-        chunkObject.transform.SetParent(world.gameObject.transform);
+        chunkObject.transform.SetParent(World.instance.gameObject.transform);
         chunkObject.transform.localPosition = chunkCoord * VoxelData.chunkSize;
 
         meshFilter = chunkObject.AddComponent<MeshFilter>();
         meshRenderer = chunkObject.AddComponent<MeshRenderer>();
-        meshRenderer.material = world.worldMaterial;
+        meshRenderer.material = World.instance.worldMaterial;
 
         position = Vector3Int.FloorToInt(chunkObject.transform.position);
 
@@ -68,7 +66,7 @@ public class Chunk {
         for (int face = 0; face < 6; ++face) {
 
             ushort otherBlockType = GetBlockType(voxelPos + VoxelData.faceChecks[face]);
-            if (!world.blockTypes[otherBlockType].isTransparent || thisBlockType == otherBlockType) continue;
+            if (!World.instance.blockTypes[otherBlockType].isTransparent || thisBlockType == otherBlockType) continue;
 
             vertices.Add(voxelPos + VoxelData.voxelVertices[VoxelData.voxelTriangles[face, 0]]);
             vertices.Add(voxelPos + VoxelData.voxelVertices[VoxelData.voxelTriangles[face, 1]]);
@@ -82,7 +80,7 @@ public class Chunk {
             triangles.Add(currentVertex + 1);
             triangles.Add(currentVertex + 3);
 
-            AddTexturedUVs(world.blockTypes[thisBlockType].faces[face]);
+            AddTexturedUVs(World.instance.blockTypes[thisBlockType].faces[face]);
 
             currentVertex += 4;
         }
@@ -149,7 +147,7 @@ public class Chunk {
     // or searches worldwide if it's not in this chunk
     public ushort GetBlockType(Vector3Int voxelPos) {
         if (VoxelNotInChunk(voxelPos))
-            return world.GetBlockType(voxelPos + position);
+            return World.instance.GetBlockType(voxelPos + position);
         return (ushort)(voxelData[voxelPos.x, voxelPos.y, voxelPos.z] >> blockTypeBitShift);
     }
 
