@@ -22,8 +22,7 @@ public class Loader {
 
     public static BlockType[] LoadBlockTypes() {
         string loadPath = Application.dataPath + "/Resources/BlockTypes.json";
-        if (!File.Exists(loadPath))
-        {
+        if (!File.Exists(loadPath)) {
             Debug.Log("BlockTypes.json does not exist");
             return new BlockType[] { };
         }

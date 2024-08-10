@@ -6,8 +6,8 @@ public static class VoxelData {
 
     public const int chunkSize = 32;
 
-    public const int worldSizeInChunks = 8;
-    public const int worldHeightInChunks = 1;
+    public const int worldSizeInChunks = 32;
+    public const int worldHeightInChunks = 16;
     public const int worldSizeInVoxels = worldSizeInChunks * chunkSize;
     public const int worldHeightInVoxels = worldHeightInChunks * chunkSize;
 

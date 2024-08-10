@@ -19,6 +19,7 @@ public class Chunk {
     List<Vector2> uvs = new List<Vector2>();
 
     Vector3Int position;
+    public bool canRender;
 
 
     public Chunk(Vector3Int chunkCoord) {
@@ -34,6 +35,9 @@ public class Chunk {
         position = Vector3Int.FloorToInt(chunkObject.transform.position);
 
         PopulateVoxelData();
+
+        World.instance.AddChunkToChunks(chunkCoord, this);
+        World.instance.UpdateCanRender(chunkCoord);
     }
 
     // ===================================================================== //

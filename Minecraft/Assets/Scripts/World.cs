@@ -118,7 +118,14 @@ public class World : MonoBehaviour {
     // RenderingUpdate() pulls the next chunk from chunksToRender and renders it
     void RenderingUpdate() {
         if (chunksToRender.Count == 0) return;
+
+        // Find the next chunk that can be rendered
         chunksToRender.TryDequeue(out Vector3Int chunkCoord);
+        while (!chunks[chunkCoord].canRender) {
+            chunksToRender.Enqueue(chunkCoord);
+            chunksToRender.TryDequeue(out chunkCoord);
+        }
+
         Chunk chunk = chunks[chunkCoord];
 
         chunk.GenerateChunkMesh();
@@ -127,8 +134,7 @@ public class World : MonoBehaviour {
     }
 
     // DrawingUpdate() pulls the next chunk from chunksToDraw and draws it
-    void DrawingUpdate()
-    {
+    void DrawingUpdate() {
         if (chunksToDraw.Count == 0) return;
         chunksToDraw.TryDequeue(out Vector3Int chunkCoord);
         Chunk chunk = chunks[chunkCoord];
@@ -161,11 +167,14 @@ public class World : MonoBehaviour {
 
                     Vector3Int chunkCoord = new Vector3Int(x, y, z);
                     if (ChunkNotInWorld(chunkCoord)) continue;
-                    CreateChunkGameObject(chunkCoord);
                     loadedChunks.Add(chunkCoord);
 
-                    if (prevLoadedChunks.Contains(chunkCoord)) prevLoadedChunks.Remove(chunkCoord);
-                    else chunksToLoad.Enqueue(chunkCoord);
+                    if (prevLoadedChunks.Contains(chunkCoord)) {
+                        prevLoadedChunks.Remove(chunkCoord);
+                    } else {
+                        CreateChunkGameObject(chunkCoord);
+                        chunksToLoad.Enqueue(chunkCoord);
+                    }
                 }
             }
         }
@@ -179,9 +188,9 @@ public class World : MonoBehaviour {
         List<Vector3Int> prevRenderedChunks = new List<Vector3Int>(renderedChunks);
         renderedChunks.Clear();
 
-        for (int x = playerChunkCoord.x - VoxelData.loadDistance; x < playerChunkCoord.x + VoxelData.loadDistance; ++x) {
-            for (int z = playerChunkCoord.z - VoxelData.loadDistance; z < playerChunkCoord.z + VoxelData.loadDistance; ++z) {
-                for (int y = playerChunkCoord.y - VoxelData.loadDistance; y < playerChunkCoord.y + VoxelData.loadDistance; ++y) {
+        for (int x = playerChunkCoord.x - VoxelData.viewDistance; x < playerChunkCoord.x + VoxelData.viewDistance; ++x) {
+            for (int z = playerChunkCoord.z - VoxelData.viewDistance; z < playerChunkCoord.z + VoxelData.viewDistance; ++z) {
+                for (int y = playerChunkCoord.y - VoxelData.viewDistance; y < playerChunkCoord.y + VoxelData.viewDistance; ++y) {
 
                     Vector3Int chunkCoord = new Vector3Int(x, y, z);
                     if (ChunkNotInWorld(chunkCoord)) continue;
@@ -205,7 +214,11 @@ public class World : MonoBehaviour {
 
     // CreateChunkGameObject() creates the gameObject needed for a Chunk instance
     void CreateChunkGameObject(Vector3Int chunkCoord) {
-        Chunk chunk = new Chunk(chunkCoord, this);
+        Chunk chunk = new Chunk(chunkCoord);
+    }
+
+    // AddChunkToChunks() Adds the given chunkCoord and chunk to the chunks dict
+    public void AddChunkToChunks(Vector3Int chunkCoord, Chunk chunk) {
         chunks[chunkCoord] = chunk;
     }
 
@@ -233,5 +246,34 @@ public class World : MonoBehaviour {
         return voxelPos.x < 0 || VoxelData.worldSizeInVoxels - 1 < voxelPos.x ||
                voxelPos.y < 0 || VoxelData.worldHeightInVoxels - 1 < voxelPos.y ||
                voxelPos.z < 0 || VoxelData.worldSizeInVoxels - 1 < voxelPos.z;
+    }
+
+    // UpdateCanRender() updates whether the given chunks (and neighbors) can render
+    public void UpdateCanRender(Vector3Int chunkCoord, bool origin = true) {
+        if (ChunkNotInWorld(chunkCoord)) return;
+
+        // If all neighboring chunks have been loaded, set canRender to true
+        if (ChunkIsLoaded(chunkCoord + VoxelData.faceChecks[0]) &&
+            ChunkIsLoaded(chunkCoord + VoxelData.faceChecks[1]) &&
+            ChunkIsLoaded(chunkCoord + VoxelData.faceChecks[2]) &&
+            ChunkIsLoaded(chunkCoord + VoxelData.faceChecks[3]) &&
+            ChunkIsLoaded(chunkCoord + VoxelData.faceChecks[4]) &&
+            ChunkIsLoaded(chunkCoord + VoxelData.faceChecks[5]))
+            chunks[chunkCoord].canRender = true;
+
+        // Update canRender for surrounding chunks
+        if (!origin) return;
+        UpdateCanRender(chunkCoord + VoxelData.faceChecks[0], false);
+        UpdateCanRender(chunkCoord + VoxelData.faceChecks[1], false);
+        UpdateCanRender(chunkCoord + VoxelData.faceChecks[2], false);
+        UpdateCanRender(chunkCoord + VoxelData.faceChecks[3], false);
+        UpdateCanRender(chunkCoord + VoxelData.faceChecks[4], false);
+        UpdateCanRender(chunkCoord + VoxelData.faceChecks[5], false);
+    }
+
+    // ChunkIsLoaded() returns if the given chunk has loaded all its data
+    public bool ChunkIsLoaded(Vector3Int chunkCoord) {
+        if (ChunkNotInWorld(chunkCoord)) return true;
+        return chunks.ContainsKey(chunkCoord);
     }
 }
