@@ -46,10 +46,17 @@ public class Chunk {
 
     // PopulateVoxelData() fills the voxelData array
     public void PopulateVoxelData() {
-        for (byte x = 0; x < VoxelData.chunkSize; ++x)
-            for (byte y = 0; y < VoxelData.chunkSize; ++y)
-                for (byte z = 0; z < VoxelData.chunkSize; ++z)
-                    voxelData[x, y, z] = SetVoxelData(1, 0);   
+        for (byte x = 0; x < VoxelData.chunkSize; ++x) {
+            for (byte z = 0; z < VoxelData.chunkSize; ++z) {
+                int terrainHeight = Noise.GetTerrainHeight(position.x + x, position.z + z) - position.y;
+                for (byte y = 0; y < VoxelData.chunkSize; ++y) {
+                    if (y < terrainHeight - 4) voxelData[x, y, z] = SetVoxelData(3, 0);
+                    else if (y < terrainHeight) voxelData[x, y, z] = SetVoxelData(2, 0);
+                    else if (y == terrainHeight) voxelData[x, y, z] = SetVoxelData(1, 0);
+                    else voxelData[x, y, z] = SetVoxelData(0, 0);
+                }
+            }
+        }   
     }
 
     // UpdateChunk() updates the chunk
@@ -58,7 +65,7 @@ public class Chunk {
     // GenerateChunkMesh() builds the entire chunk's mesh
     public void GenerateChunkMesh() {
         for (byte x = 0; x < VoxelData.chunkSize; ++x)
-            for (byte y = 0; y < VoxelData.chunkSize; ++y)
+            for (int y = 0; y < VoxelData.chunkSize; ++y)
                 for (byte z = 0; z < VoxelData.chunkSize; ++z)
                     AddVoxelMeshToChunkMesh(new Vector3Int(x, y, z));
     }

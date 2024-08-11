@@ -4,20 +4,24 @@ using UnityEngine;
 
 public static class VoxelData {
 
+    // World/chunk size data
+    public const int seed = 1111111111;
     public const int chunkSize = 32;
-
-    public const int worldSizeInChunks = 32;
-    public const int worldHeightInChunks = 16;
+    
+    public const int worldSizeInChunks = 64;
+    public const int worldHeightInChunks = 26;
     public const int worldSizeInVoxels = worldSizeInChunks * chunkSize;
     public const int worldHeightInVoxels = worldHeightInChunks * chunkSize;
 
     public const int worldCenterInChunks = worldSizeInChunks / 2;
     public const int worldCenterInVoxels = worldSizeInVoxels / 2;
 
+    // Texture atlas data
     public const int textureAtlasSizeInBlocks = 16;
     public const float normalizedBlockTextureSize = 1.0f / textureAtlasSizeInBlocks;
 
-    public static int viewDistance = 2;
+    // View and load distance
+    public static int viewDistance = 8;
     public static int loadDistance = viewDistance + 4;
 
 

@@ -2,27 +2,29 @@
 //                                 TODO                                  //
 // ===================================================================== //
 
-[1] Implement Greedy Meshing
+[ ] Implement Basic World Generation
+    - Introduce simple world generation with 2d perlin noise
+[ ] Implement Greedy Meshing
     - Combine meshes of similar blocktypes to reduce the amount of data being passed to the GPU
-[2] Improve Multithreading
+[ ] Implement Ambient Occlusion
+    - Add shade to the corners/edges of blocks based on positioning
+[ ] Improve Multithreading
     - Implement thread pooling, keeping threads busy no matter the distribution of jobs
     - Make the number of threads variable
-[3] Implement Basic World Generation
-    - Introduce simple world generation with 2d perlin noise
-[4] Implement A Player Controller
+[ ] Implement A Player Controller
     - Give the player a way to move/look around
     - Player should collide with blocks
-[5] Implement Placing/Breaking Blocks
+[ ] Implement Placing/Breaking Blocks
     - Player should break blocks when left clicking, break blocks when right clicking
-[6] Add Transparent Blocks
+[ ] Add Transparent Blocks
     - New transparent material needs to be made and added to a new transparent mesh
-[7] Add Water
+[ ] Add Water
     - Create unique shapes 
-[8] Implement Advanced World Generation
+[ ] Implement Advanced World Generation
     - Generate terrain height using 2d fractal perlin noise and a naïve derivative
-[9] Implement Caves and Ores
+[ ] Implement Caves and Ores
     - Generate caves using 3d perlin noise and lodes
-[10] Introduce Biomes
+[ ] Introduce Biomes
     - Create multiple biome profiles, each with their own distinct look
     - Blend terrain heights together based on biome contribution
 

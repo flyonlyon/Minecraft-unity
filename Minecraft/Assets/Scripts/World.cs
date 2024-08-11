@@ -49,6 +49,8 @@ public class World : MonoBehaviour {
         }
         instance = this;
 
+        Random.InitState(VoxelData.seed);
+
         // If multithreading, start all threads
         if (multithreading) {
             chunkLoadingThread = new Thread(new ThreadStart(ChunkLoadingThreadUpdate));
@@ -148,7 +150,7 @@ public class World : MonoBehaviour {
 
     // SpawnPlayer() sets the player's location
     void SpawnPlayer() {
-        player.transform.position = new Vector3(VoxelData.worldCenterInVoxels, VoxelData.worldHeightInVoxels + 2, VoxelData.worldCenterInVoxels);
+        player.transform.position = new Vector3(VoxelData.worldCenterInVoxels, Noise.GetTerrainHeight(VoxelData.worldCenterInVoxels, VoxelData.worldCenterInVoxels), VoxelData.worldCenterInVoxels);
     }
 
     // CheckViewDistance() manages loading and rendering chunks based on their distance from the player
